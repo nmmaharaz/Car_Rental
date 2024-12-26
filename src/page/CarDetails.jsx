@@ -51,7 +51,7 @@ const CarDetails = () => {
     const name = user?.displayName;
     const start_date =format(value, 'dd-MM-yyyy HH:mm')
     const end_date = format(endDate, 'dd-MM-yyyy HH:mm')
-    const booking_status = "pending";
+    const booking_status = "confirmed";
     const bookMarkData = {
       book_mark_id,
       car_model,
