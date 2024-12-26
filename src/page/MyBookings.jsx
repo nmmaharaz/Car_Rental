@@ -90,11 +90,13 @@ const MyBookings = () => {
       </div>
     ),{
       position: "top-center",
+      width: "400px",
+      height: 'auto'
    })
   }
   
   return (
-    <div>
+    <div className="my-12">
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">
         <table className="table">
           <Modal

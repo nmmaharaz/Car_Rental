@@ -17,12 +17,12 @@ const AvailableCars = () => {
   const [sortDate, setSortDate] = useState('')
   const [sortPrice, setSortPrice] = useState('')
   const [formatData, setFormatData] = useState(true)
-
-
+  
+  
   console.log("this is car data", cars);
   useEffect(()=>{
     const carData = async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/cars/available`,{
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/cars/available`,{
           params:{
             search, 
             sortDate,
@@ -31,15 +31,17 @@ const AvailableCars = () => {
         });
         // ?filter=${filter}&search=${search}&sort=${sort}
         setCars(data);
+        if(loading)return<Loader></Loader>
+        if(loading)return<Loader></Loader>
       };
-    carData()
-  },[search, sortDate, sortPrice])
-  if(loading)return<Loader></Loader>
+      carData()
+    },[search, sortDate, sortPrice,loading])
+
 
   return (
     <div className="w-11/12 mx-auto">
      {
-      cars.length > 0?( <div>
+      cars?.length > 0?( <div>
         <div className="flex justify-between mt-7 items-center">
           <input
             type="text"

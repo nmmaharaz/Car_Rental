@@ -7,6 +7,8 @@ import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import useAxiosSecure from "../hook/UseAxios";
+import logo from "../assets/car-logo.png"
+import { toast } from "react-toastify";
 
 
 const MyCars = () => {
@@ -92,6 +94,9 @@ const MyCars = () => {
         updateCarData
       );
       bookMarkData();
+      toast.success("Update Successfully",{
+            position: "top-center",
+         })
       setOpenModal(false)
     } catch (error) {
       console.log(error);
@@ -102,7 +107,7 @@ const MyCars = () => {
 
   console.log("Book Mark Data", bookMark);
   return (
-    <div>
+    <div className="my-12">
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">
         <table className="table">
           <Modal
@@ -114,7 +119,7 @@ const MyCars = () => {
             <Modal.Header />
             <Modal.Body>
               <div className="text-center">
-                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+               <div className="flex justify-center items-center "><img className="w-64" src={logo} alt="" /></div>
                 <form onSubmit={handleUpdate} className="card-body">
                   <div className="form-control">
                     <label className="label">

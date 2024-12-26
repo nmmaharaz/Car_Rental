@@ -9,8 +9,8 @@ const Banner = () => {
         </div>
             <div className="drop-shadow-2xl  font-bold absolute inset-0 flex justify-center items-center z-10">
             <div className="flex flex-col items-center">
-            <p className=" text-7xl text-[#cc34e0]">Drive Your Dreams Today!</p>
-            <Link to="/availablecars" className="mt-4">
+            <p className=" text-7xl text-[#03ffc8]">Drive Your Dreams Today!</p>
+            <Link to="/availablecars" className="mt-12">
             <Button size="lg" gradientDuoTone="purpleToPink">
              View Available
             </Button>
