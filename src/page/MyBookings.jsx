@@ -6,25 +6,24 @@ import { GiCancel } from "react-icons/gi";
 import { Button, Card, Modal } from "flowbite-react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import useAxiosSecure from "../hook/UseAxios";
 
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
-  const axiosSecure = useAxiosSecure()
-  const [updateDate, setUpdateDate] = useState(null)
+  const axiosSecure = useAxiosSecure();
+  const [updateDate, setUpdateDate] = useState(null);
   const [bookMark, setBookMark] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [value, setValue] = useState(updateDate);
-  console.log("This update date",value)
+  const [value, setValue] = useState(updateDate?.start_date);
+  const [endDate, setEndDate] = useState(updateDate?.end_date);
+  console.log("This update date", value);
   useEffect(() => {
     bookMarkData();
   }, [user?.email]);
   const bookMarkData = async () => {
-    const { data } = await axiosSecure.get(
-      `/bookmark/${user?.email}`
-    );
+    const { data } = await axiosSecure.get(`/bookmark/${user?.email}`);
     setBookMark(data);
   };
   const handleDelete = async (id) => {
@@ -36,28 +35,28 @@ const MyBookings = () => {
     }
   };
 
-  const handleDateUpdate = async (e)=>{
-      e.preventDefault()
-      const formatDate = format(value, 'dd-MM-yyyy HH:mm')
+  const handleDateUpdate = async (e) => {
+    e.preventDefault();
+    const start_date = format(value, "dd-MM-yyyy HH:mm");
+    const end_date = format(endDate, "dd-MM-yyyy HH:mm");
 
-      console.log("data paychi", formatDate)
-      try {
-       await axiosSecure.patch(
-          `/bookmark/${updateDate._id}`,
-          {date:formatDate}
-        );
-        bookMarkData();
-        setOpenModal(false)
-      } catch (error) {
-        console.log(error);
-      }
-  }
+    try {
+      await axiosSecure.patch(`/bookmark/${updateDate._id}`, {
+        end_date,
+        start_date,
+      });
+      bookMarkData();
+      setOpenModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">
         <table className="table">
-        <Modal
+          <Modal
             show={openModal}
             size="xl"
             onClose={() => setOpenModal(false)}
@@ -66,24 +65,27 @@ const MyBookings = () => {
             <Modal.Header />
             <Modal.Body>
               <div className="text-center">
-               <p className="text-3xl font-bold mb-7">Modify Date</p>
+                <p className="text-3xl font-bold mb-7">Modify Date</p>
                 <DatePicker
-                    selected={value}
-                    onChange={(date) => setValue(date)}
-                    placeholderText="Click to select a date"
-                    dateFormat="dd/MM/yyyy HH:MM"
-                  />
-                   <div className="flex mt-8 justify-center gap-4">
-              <Button
-                color="failure"
-                onClick={handleDateUpdate}
-              >
-                Confirm
-              </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
-                Cancel
-              </Button>
-            </div>
+                  selected={value}
+                  onChange={(date) => setValue(date)}
+                  placeholderText="select start date"
+                  dateFormat="dd/MM/yyyy HH:MM"
+                />
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  placeholderText="select end date"
+                  dateFormat="dd/MM/yyyy HH:MM"
+                />
+                <div className="flex mt-8 justify-center gap-4">
+                  <Button color="failure" onClick={handleDateUpdate}>
+                    Confirm
+                  </Button>
+                  <Button color="gray" onClick={() => setOpenModal(false)}>
+                    Cancel
+                  </Button>
+                </div>
               </div>
             </Modal.Body>
           </Modal>
@@ -123,19 +125,30 @@ const MyBookings = () => {
                 <td>
                   <p className="font-bold text-[16px]">{bookMark.car_model}</p>
                 </td>
-                <td className="text-center">{bookMark.date}</td>
+                <td className="text-center">
+                  <div className="flex flex-col gap-y-2">
+                    <p>{bookMark.start_date}</p>
+                    <p>{bookMark.end_date}</p>
+                  </div>
+                </td>
                 <td className="text-center">${bookMark.rental_price}</td>
                 <td className="text-center">{bookMark.booking_status}</td>
                 <td className="">
                   <div className="flex items-center justify-center gap-5">
-                   
-                    <Button onClick={() => {setOpenModal(true), setUpdateDate(bookMark)}} outline gradientDuoTone="purpleToPink" size="sm">
+                    <Button
+                      onClick={() => {
+                        setOpenModal(true), setUpdateDate(bookMark);
+                      }}
+                      outline
+                      gradientDuoTone="purpleToPink"
+                      size="sm"
+                    >
                       <p className="flex items-center">
                         <MdOutlineDateRange className="text-[16px] mr-2" />
                         Modify Date
                       </p>
                     </Button>
-                 
+
                     <GiCancel
                       onClick={() => handleDelete(bookMark._id)}
                       className="cursor-pointer text-2xl text-red-500"

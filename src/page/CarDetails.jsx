@@ -5,8 +5,13 @@ import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import dateFormat from "dateformat";
 import useAxiosSecure from "../hook/UseAxios";
+import DatePicker from "react-datepicker";
+import { format } from 'date-fns';
+import logo from '../assets/cars.png'
 
 const CarDetails = () => {
+  const [value, setValue] = useState();
+  const [endDate, setEndDate] = useState();
   const [cars, setCars] = useState({});
   const axiosSecure = useAxiosSecure()
   console.log("this is car data", cars);
@@ -44,8 +49,8 @@ const CarDetails = () => {
     const email = user?.email;
     const user_photo = user?.photoURL;
     const name = user?.displayName;
-    const now = new Date();
-    const date = dateFormat(now, "dd/mm/yyyy HH:MM");
+    const start_date =format(value, 'dd-MM-yyyy HH:mm')
+    const end_date = format(endDate, 'dd-MM-yyyy HH:mm')
     const booking_status = "pending";
     const bookMarkData = {
       book_mark_id,
@@ -56,13 +61,14 @@ const CarDetails = () => {
       features,
       description,
       image_url,
-      date,
       review,
       booking_status,
       location,
       email,
       user_photo,
       name,
+      start_date,
+      end_date,
     };
     console.log(bookMarkData);
     try {
@@ -138,19 +144,37 @@ const CarDetails = () => {
       >
         <Modal.Header />
         <Modal.Body>
-          <div className="text-center">
+          <div className="text-center ">
+            <img src={logo} alt="" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               Are you sure?
             </h3>
-            <p>Car Model: {car_model}</p>
-            <p>Reg. No: {registration_number}</p>
+            <p className="text-xl font-bold mb-6">Car Model: {car_model}</p>
+            <p className="font-semibold">Reg. No: {registration_number}</p>
             <p>
-              Cost:{" "}
-              <span className="text-2xl font-extrabold">
+              <span className="font-semibold">Rental Price:</span>{" "}
+              <span className="text-xl font-extrabold">
                 ${rental_price}
-                <sub className="font-semibold">Per Day</sub>
+                <sub className="font-semibold">Day</sub>
               </span>
             </p>
+            <p className="font-bold mt-4 mb-2">Select Booking Date</p>
+                <div className="flex flex-col mb-4 items-center">
+                <DatePicker
+                className="rounded-2xl"
+                    selected={value}
+                    onChange={(date) => setValue(date)}
+                    placeholderText="Select booking date"
+                    dateFormat="dd/MM/yyyy HH:MM"
+                  />
+                <DatePicker
+                className="rounded-2xl mt-2"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    placeholderText="Select booking date"
+                    dateFormat="dd/MM/yyyy HH:MM"
+                  />
+                </div>
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"

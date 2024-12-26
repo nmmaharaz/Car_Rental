@@ -15,7 +15,6 @@ const AvailableCars = () => {
   const [sortPrice, setSortPrice] = useState('')
   const [formatData, setFormatData] = useState(true)
 
-  
 
   console.log("this is car data", cars);
   useEffect(()=>{
