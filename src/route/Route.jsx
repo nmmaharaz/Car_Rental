@@ -9,11 +9,13 @@ import Login from "../page/Login";
 import Registration from "../page/Registration";
 import CarDetails from "../page/CarDetails";
 import PrivateRoute from "../privateroute/PrivateRoute";
+import Error from "../components/Error";
 
 const router = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout></MainLayout>,
+      errorElement:<Error></Error>,
       children:[
         {
             path:"/",
