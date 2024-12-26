@@ -1,0 +1,174 @@
+import axios from "axios";
+import { Button, Card, Modal } from "flowbite-react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import dateFormat from "dateformat";
+import useAxiosSecure from "../hook/UseAxios";
+
+const CarDetails = () => {
+  const [cars, setCars] = useState({});
+  const axiosSecure = useAxiosSecure()
+  console.log("this is car data", cars);
+  const [openModal, setOpenModal] = useState(false);
+  const { user } = useContext(AuthContext);
+  const reviewRef = useRef();
+
+  const { id } = useParams();
+  const {
+    _id,
+    car_model,
+    rental_price,
+    availability,
+    registration_number,
+    features,
+    description,
+    image_url,
+    location,
+  } = cars || {};
+  console.log("DataPaichi", cars);
+  useEffect(() => {
+    carData();
+  }, [id]);
+
+  const carData = async () => {
+    const { data } = await axiosSecure.get(
+      `/cardeatails/${id}`
+    );
+    setCars(data);
+  };
+
+  const handleBookMark = async () => {
+    const review = reviewRef.current.value;
+    const book_mark_id = _id;
+    const email = user?.email;
+    const user_photo = user?.photoURL;
+    const name = user?.displayName;
+    const now = new Date();
+    const date = dateFormat(now, "dd/mm/yyyy HH:MM");
+    const booking_status = "pending";
+    const bookMarkData = {
+      book_mark_id,
+      car_model,
+      rental_price,
+      availability,
+      registration_number,
+      features,
+      description,
+      image_url,
+      date,
+      review,
+      booking_status,
+      location,
+      email,
+      user_photo,
+      name,
+    };
+    console.log(bookMarkData);
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/bookmark`,
+        bookMarkData
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Card className="mx-auto w-8/12">
+      <div>
+        <img className="w-full" src={image_url} alt="" />
+      </div>
+
+      <div>
+        <p className="text-2xl sm:mt-1 lg:mt-4 text-blue-700 sm:text-4xl text-center font-bold">
+          {car_model}
+        </p>
+        <p>
+          <span className="text-3xl font-extrabold">${rental_price}</span>
+          <sub className="font-semibold">Price Per Day</sub>
+        </p>
+        <p className="mt-4 text-justify text-gray-500">{description}</p>
+        <div className="divider"></div>
+        <p className="text-2xl text-red-500 font-bold ">Availability</p>
+
+        <p className="mt-3">{availability}</p>
+        <div className="divider"></div>
+
+        <div>
+          <div>
+            <p className="text-2xl text-red-500 font-bold mb-3">Features</p>
+            <div className="flex flex-wrap gap-4">
+              {features?.map((feature, index) => (
+                <Button color="gray" pill size="xs" key={index}>
+                  {feature.value}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Card className="mt-6">
+          <label className="label">
+            <p className="text-2xl text-red-500 font-bold">Add a Review</p>
+          </label>
+          <textarea
+            ref={reviewRef}
+            type="text"
+            placeholder="your_review"
+            className="input input-bordered"
+            name="reviews"
+            required
+          />
+        </Card>
+        <div className="flex float-end">
+          <Link className="mt-4" onClick={() => setOpenModal(true)}>
+            <Button size="lg" gradientDuoTone="purpleToPink">
+              Book Mark
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure?
+            </h3>
+            <p>Car Model: {car_model}</p>
+            <p>Reg. No: {registration_number}</p>
+            <p>
+              Cost:{" "}
+              <span className="text-2xl font-extrabold">
+                ${rental_price}
+                <sub className="font-semibold">Per Day</sub>
+              </span>
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => {
+                  setOpenModal(false), handleBookMark();
+                }}
+              >
+                Confirm
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </Card>
+  );
+};
+
+export default CarDetails;
