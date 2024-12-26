@@ -20,7 +20,7 @@ const AvailableCars = () => {
   console.log("this is car data", cars);
   useEffect(()=>{
     const carData = async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/cars`,{
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/cars/available`,{
           params:{
             search, 
             sortDate,

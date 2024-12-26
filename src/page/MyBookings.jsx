@@ -92,7 +92,7 @@ const MyBookings = () => {
               <th>Car Image</th>
               <th>Car Model</th>
               <th className="text-center">Booking Date</th>
-              <th className="text-center">Total Price</th>
+              <th className="text-center">Daily Rental Price</th>
               <th className="text-center">Booking Status</th>
               <th className="text-center">Actions</th>
             </tr>
