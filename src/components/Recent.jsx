@@ -1,13 +1,16 @@
 import { Button, Card } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
 
 const Recent = ({car}) => {
     const {_id, car_model, date, rental_price, availability, registration_number, features, description, bookingCount, image_url} = car
     return (
-        <div>
+        <motion.div  whileHover={{ scale: 1.03 }}
+        transition={{ stiffness: 300 }}>
              <Card
       className="max-w-sm mx-auto" 
-      renderImage={() => <img className="h-52" src={image_url} alt="image 1" />}
+      renderImage={() => <img className="h-64" src={image_url} alt="image 1" />}
     >
       <div className="h-[140px] flex flex-col justify-between">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -27,7 +30,7 @@ const Recent = ({car}) => {
       </div>
       </div>
     </Card>
-        </div>
+        </motion.div>
     );
 };
 

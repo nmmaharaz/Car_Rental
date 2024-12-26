@@ -23,7 +23,13 @@ const Login = () => {
 
   const handleGoogle = (e) => {
     e.preventDefault();
-    googleSignUp();
+    
+    try{
+      googleSignUp();
+      navigate(state ? state:"/")
+    }catch(error){
+      console.log(error)
+    }
   };
 
   return (

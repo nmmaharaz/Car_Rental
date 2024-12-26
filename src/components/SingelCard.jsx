@@ -1,10 +1,12 @@
 import { Button, Card } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const SingelCard = ({car}) => {
     const {_id, car_model, date, rental_price, registration_number, features, description, bookingCount, image_url} = car
     return (
-        <div >
+        <motion.div  whileHover={{ scale: 1.03 }}
+        transition={{ stiffness: 300 }} >
              <Card
       className="mx-auto"
       renderImage={() => <img className="sm:w-64 w-full" src={image_url} alt="image 1" />} horizontal >
@@ -32,7 +34,7 @@ const SingelCard = ({car}) => {
       </div>
       </div>
     </Card>
-        </div>
+        </motion.div>
     );
 };
 

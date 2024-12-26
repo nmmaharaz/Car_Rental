@@ -28,7 +28,12 @@ const Registration = () => {
 
   const handleGoogle = (e) => {
     e.preventDefault();
-    googleSignUp();
+    try{
+      googleSignUp();
+      navigate("/")
+    }catch(error){
+      console.log(error)
+    }
   };
   return (
     <div className="hero bg-base-200 min-h-screen">
