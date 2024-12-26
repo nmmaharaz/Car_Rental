@@ -31,8 +31,8 @@ const MyBookings = () => {
 
   const handleDateUpdate = async (e) => {
     e.preventDefault();
-    const start_date = format(value, "dd-MM-yyyy HH:mm");
-    const end_date = format(endDate, "dd-MM-yyyy HH:mm");
+    const start_date = format(value, "dd/MM/yyyy HH:mm");
+    const end_date = format(endDate, "dd/MM/yyyy HH:mm");
 
     try {
       await axiosSecure.patch(`/bookmark/${updateDate._id}`, {
@@ -88,7 +88,9 @@ const MyBookings = () => {
           </button>
         </div>
       </div>
-    ))
+    ),{
+      position: "top-center",
+   })
   }
   
   return (
@@ -171,7 +173,11 @@ const MyBookings = () => {
                   </div>
                 </td>
                 <td className="text-center">${bookMark.rental_price}</td>
-                <td className="text-center">{bookMark?.booking_status}</td>
+                <td className={`text-center ${
+              bookMark.booking_status === 'Confirmed' && 'text-green-500'
+            } ${
+              bookMark.booking_status === 'Canceled' && 'text-red-500'
+            }`} >{bookMark?.booking_status}</td>
                 <td className="">
                   <div className="flex items-center justify-center gap-5">
                     <Button

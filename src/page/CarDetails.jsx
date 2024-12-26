@@ -19,7 +19,9 @@ const CarDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const { user } = useContext(AuthContext);
   const reviewRef = useRef();
-
+  
+ 
+  
   const { id } = useParams();
   const {
     _id,
@@ -45,14 +47,20 @@ const CarDetails = () => {
   };
 
   const handleBookMark = async () => {
+    if(!value)return toast.error("Select Booking Date",{
+      position: "top-center",
+   })
+    if(!endDate)return toast.error("Select End Date",{
+      position: "top-center",
+   })
     const review = reviewRef.current.value;
     const book_mark_id = _id;
     const email = user?.email;
     const user_photo = user?.photoURL;
     const name = user?.displayName;
-    const start_date =format(value, 'dd-MM-yyyy HH:mm')
-    const end_date = format(endDate, 'dd-MM-yyyy HH:mm')
-    const booking_status = 'confirmed'
+    const start_date =format(value, 'dd/MM/yyyy HH:mm')
+    const end_date = format(endDate, 'dd/MM/yyyy HH:mm')
+    const booking_status = 'Confirmed'
     const bookMarkData = {
       book_mark_id,
       car_model,
@@ -72,6 +80,9 @@ const CarDetails = () => {
       end_date,
     };
     console.log(bookMarkData);
+    if(!start_date)return toast.error("Already booking this car",{
+      position: "top-center",
+   })
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/bookmark`,
@@ -105,7 +116,9 @@ const CarDetails = () => {
         <div className="divider"></div>
         <p className="text-2xl text-red-500 font-bold ">Availability</p>
 
-        <p className="mt-3">{availability}</p>
+        <p className={`inline-block rounded-3xl text-sm ${availability === 'available' ? "bg-green-400 text-white font-bold px-4 py-2":"bg-red-400 text-white font-bold px-4 py-2"}`}>
+        {availability}
+      </p>
         <div className="divider"></div>
 
         <div>

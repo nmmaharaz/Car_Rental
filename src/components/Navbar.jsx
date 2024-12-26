@@ -11,10 +11,12 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  console.log(user)
 
 
   return (
-    <div className="bg-base-100 border-blue-600 border-b-4">
+    <div className="sticky top-0 z-50">
+      <div className="bg-base-100 border-blue-600 border-b-4">
       <div className="navbar w-11/12 mx-auto">
       <div className="navbar-start">
         <div className="dropdown">
@@ -114,7 +116,13 @@ const Navbar = () => {
           <button onClick={handleSignOut}>Logout</button>
         </Button>
         }
+        
+           {
+            user && user?.photoURL && (<div className="tooltip tooltip-bottom"><img className="w-[45px] h-[45px] rounded-full" src={user.photoURL} alt="" /></div>)
+           }
+            
       </div>
+    </div>
     </div>
     </div>
   );

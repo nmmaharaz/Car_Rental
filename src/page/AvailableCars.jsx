@@ -97,7 +97,7 @@ const AvailableCars = () => {
           <div className="flex flex-col justify-center h-screen items-center">
             <p className="text-4xl mb-8 font-bold">Car is not availble</p>
             <Link to="/addcar"><Button outline gradientDuoTone="purpleToPink">
-        Book Now
+        Add Car
       </Button></Link>
           </div>
         )

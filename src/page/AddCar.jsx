@@ -37,7 +37,7 @@ const AddCar = () => {
     const location = formData.location.value;
     const image_url = formData.photo_url.value;
     const now = new Date();
-    const date = dateFormat(now, "dd/mm/yyyy HH:MM");
+    const date = dateFormat(now, "yyyy-MM-dd HH:mm:ss");
     const AddCarData = {
       car_model,
       rental_price,

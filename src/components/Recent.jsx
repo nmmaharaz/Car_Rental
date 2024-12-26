@@ -1,10 +1,15 @@
 import { Button, Card } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { format } from 'timeago.js';
 
 
 const Recent = ({car}) => {
     const {_id, car_model, date, rental_price, availability, registration_number, features, description, bookingCount, image_url} = car
+
+    const result = format(date)
+  
+    
     return (
         <motion.div  whileHover={{ scale: 1.03 }}
         transition={{ stiffness: 300 }}>
@@ -23,7 +28,7 @@ const Recent = ({car}) => {
       </p>
      </div>
       <div className="flex justify-between items-center">
-      <p>{date}</p>
+      <p>{result}</p>
         <Link to={`/cars/${_id}`}><Button outline gradientDuoTone="purpleToPink">
         Book Now
       </Button></Link>
