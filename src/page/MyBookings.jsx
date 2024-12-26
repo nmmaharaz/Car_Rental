@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import useAxiosSecure from "../hook/UseAxios";
+import { toast } from "react-toastify";
 
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
@@ -26,14 +27,7 @@ const MyBookings = () => {
     const { data } = await axiosSecure.get(`/bookmark/${user?.email}`);
     setBookMark(data);
   };
-  const handleDelete = async (id) => {
-    try {
-      await axiosSecure.delete(`/bookmark/${id}`);
-      bookMarkData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
   const handleDateUpdate = async (e) => {
     e.preventDefault();
@@ -52,6 +46,51 @@ const MyBookings = () => {
     }
   };
 
+  const handleUpdate =async(id, prevStatus, status) =>{
+    if (prevStatus === status || prevStatus === 'Canceled')
+      return console.log('Not Allowed')
+
+    try {
+      const { data } = await axiosSecure.patch(
+        `/bookmarkstatusupdate/${id}`,
+        {booking_status: status }
+      )
+      bookMarkData()
+      toast.success(`Status changed to ${status}`)
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  const handleStatusChange = async (id, prevStatus, status) => {
+    toast(t => (
+      <div className='flex gap-3 items-center'>
+        <div>
+          <p>
+          Are you sure you want to cancel this booking?
+          </p>
+        </div>
+        <div className='gap-2 flex'>
+          <button
+            className='bg-red-400 text-white px-3 py-1 rounded-md'
+            onClick={() => {
+              toast.dismiss(t.id)
+              handleUpdate(id, prevStatus, status)
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className='bg-green-400 text-white px-3 py-1 rounded-md'
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ))
+  }
+  
   return (
     <div>
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">
@@ -132,7 +171,7 @@ const MyBookings = () => {
                   </div>
                 </td>
                 <td className="text-center">${bookMark.rental_price}</td>
-                <td className="text-center">{bookMark.booking_status}</td>
+                <td className="text-center">{bookMark?.booking_status}</td>
                 <td className="">
                   <div className="flex items-center justify-center gap-5">
                     <Button
@@ -149,10 +188,11 @@ const MyBookings = () => {
                       </p>
                     </Button>
 
-                    <GiCancel
-                      onClick={() => handleDelete(bookMark._id)}
-                      className="cursor-pointer text-2xl text-red-500"
+                   <button disabled={bookMark.booking_status == 'Canceled'} className="disabled:cursor-not-allowed" onClick={() => handleStatusChange(bookMark._id, bookMark.booking_status, "Canceled")} >
+                   <GiCancel
+                      className="text-2xl text-red-500"
                     />
+                   </button>
                   </div>
                 </td>
               </tr>

@@ -62,12 +62,6 @@ const MyCars = () => {
     setFeaturesData(event);
   };
 
-  // const updateData = async (id) => {
-  //   const { data } = await axiosSecure.get(
-  //     `/cardeatails/${id}`
-  //   );
-  //   setCars(data);
-  // };
 
   const handleUpdate = async (e) => {
     e.preventDefault();

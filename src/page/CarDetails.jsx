@@ -8,6 +8,7 @@ import useAxiosSecure from "../hook/UseAxios";
 import DatePicker from "react-datepicker";
 import { format } from 'date-fns';
 import logo from '../assets/cars.png'
+import { toast } from "react-toastify";
 
 const CarDetails = () => {
   const [value, setValue] = useState();
@@ -51,7 +52,7 @@ const CarDetails = () => {
     const name = user?.displayName;
     const start_date =format(value, 'dd-MM-yyyy HH:mm')
     const end_date = format(endDate, 'dd-MM-yyyy HH:mm')
-    const booking_status = "confirmed";
+    const booking_status = 'confirmed'
     const bookMarkData = {
       book_mark_id,
       car_model,
@@ -76,9 +77,13 @@ const CarDetails = () => {
         `${import.meta.env.VITE_API_URL}/bookmark`,
         bookMarkData
       );
-      console.log(data);
+      toast.success("Booking successfuly",{
+        position: "top-center",
+     })
     } catch (error) {
-      console.log(error);
+      toast.error("Already booking this car",{
+        position: "top-center",
+     })
     }
   };
 

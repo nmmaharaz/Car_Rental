@@ -34,8 +34,8 @@ const AvailableCars = () => {
       };
     carData()
   },[search, sortDate, sortPrice])
-
   if(loading)return<Loader></Loader>
+
   return (
     <div className="w-11/12 mx-auto">
      {
