@@ -10,43 +10,22 @@
 
 ###
 
-<h3 align="left">1. User Ratings and Reviews</h3>
+<h6 align="left">1. Add reviews route users add to their genre base reviews and ratings.<br>When a user adds a review, they can see all their reviews in the "My reviews" route. Users can delete the review from this router if they want.</h6>
+
+###
+<p align="left">2. View modern cars with detailed information for booking.</p>
 
 ###
 
-<h6 align="left">Add reviews route users add to their genre base reviews and ratings.<br>When a user adds a review, they can see all their reviews in the "My reviews" route. Users can delete the review from this router if they want.</h6>
+<h6 align="left">3. My Cars page to update or delete user-posted car listings.</h6>
 
 ###
 
-<h3 align="left">2. Trending Games</h3>
+<p align="left">4. Real-time booking updates on the My Bookings page.</p>
 
 ###
 
-<p align="left">Home page highlight popular games.</p>
-
-###
-
-<h3 align="left">3. Game Categories</h3>
-
-###
-
-<h6 align="left">All reviews router user genre filtering and easy searching.</h6>
-
-###
-
-<h3 align="left">4. Game Wishlist</h3>
-
-###
-
-<p align="left">Users can add a wishlist.<br>When a user adds a wishlist, they can see all their wishlists in the "My Wishlist" route. Users can delete the wishlist from this router if they want.</p>
-
-###
-
-<h3 align="left">5. Update Review</h3>
-
-###
-
-<h6 align="left">User can edit his review from my reviews route</h6>
+<h6 align="left">Users can add a wishlist. When a user adds a wishlist, they can see all their wishlists in the My Wishlist route. Users can delete the wishlist from this router if they want.</h6>
 
 ###
 
