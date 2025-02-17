@@ -40,7 +40,6 @@ const MyCars = () => {
     availability,
     registration_number,
     description,
-    date,
     location,
   } = updateInfo || {};
 
