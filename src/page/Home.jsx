@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import Loader from "../components/Loader";
 import Banner from "../components/Banner";
-import Choose from "../components/Choose";
+// import Choose from "../components/Choose";
 import axios from "axios";
 import Recent from "../components/Recent";
 import Testomonial from "../components/Testomonial";
