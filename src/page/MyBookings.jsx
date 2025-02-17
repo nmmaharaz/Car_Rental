@@ -10,9 +10,11 @@ import { format } from "date-fns";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import useAxiosSecure from "../hook/UseAxios";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
+  const [loading, setLoading]= useState(true)
   const axiosSecure = useAxiosSecure();
   const [updateDate, setUpdateDate] = useState(null);
   const [bookMark, setBookMark] = useState([]);
@@ -25,6 +27,7 @@ const MyBookings = () => {
   }, [user?.email]);
   const bookMarkData = async () => {
     const { data } = await axiosSecure.get(`/bookmark/${user?.email}`);
+    setLoading(false)
     setBookMark(data);
   };
  
@@ -95,6 +98,8 @@ const MyBookings = () => {
    })
   }
   
+  if(loading)return <Loader></Loader>
+
   return (
     <div className="my-12">
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">

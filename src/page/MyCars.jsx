@@ -1,41 +1,57 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import axios from "axios";
-import { Card, Modal } from "flowbite-react";
+import { Button, Card, Modal } from "flowbite-react";
 import Select from "react-select";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import useAxiosSecure from "../hook/UseAxios";
-import logo from "../assets/car-logo.png"
+import logo from "../assets/car-logo.png";
 import { toast } from "react-toastify";
-
+import DatePicker from "react-datepicker";
+import Loader from "../components/Loader";
 
 const MyCars = () => {
-  const { user } = useContext(AuthContext);
-  const axiosSecure = useAxiosSecure()
+  const { user} = useContext(AuthContext);
+  const [loading, setLoading]= useState(true)
+  const [data, setData] = useState(null);
+  const axiosSecure = useAxiosSecure();
   const [cars, setCars] = useState({});
+
+  
+
+  const [bookMark, setBookMark] = useState([]);
+  const [updateInfo, setUpdateInfo] = useState(null);
+
   const {
     _id,
+    image_url,
     car_model,
+    manufecture,
+    seat,
+    engine,
+    mileage,
+    brand,
+    shift,
+    power,
+    fual,
     rental_price,
     availability,
     registration_number,
-    features,
     description,
-    image_url,
+    date,
     location,
-  } = cars || {};
-  const [bookMark, setBookMark] = useState([]);
-  const [updateInfo, setUpdateInfo] = useState(null);
+  } = updateInfo || {};
+
+
   useEffect(() => {
     bookMarkData();
   }, [user, _id]);
 
   const bookMarkData = async () => {
-    const { data } = await axiosSecure.get(
-      `/mycar/${user?.email}`
-    );
+    const { data } = await axiosSecure.get(`/mycar/${user?.email}`);
+    setLoading(false)
     setBookMark(data);
   };
   const handleDelete = async (id) => {
@@ -46,177 +62,274 @@ const MyCars = () => {
       console.log(error);
     }
   };
+  const [value, setValue] = useState(updateInfo?.date);
+
   const [openModal, setOpenModal] = useState(false);
- 
-
-  const [featuresData, setFeaturesData] = useState();
-
-  const option = [
-    { value: "GPS", label: "GPS" },
-    { value: "AC", label: "AC" },
-    { value: "Backup Camera", label: "Backup Camera" },
-    { value: "Heated Seat", label: "Heated Seat" },
-    { value: "Sound System", label: "Sound System" },
-  ];
-  const handleFeatures = (event) => {
-    const { value } = event;
-    console.log(value);
-    setFeaturesData(event);
-  };
-
+  const [openUModal, setOpenUModal] = useState(false);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     const formData = e.target;
     const _id = updateInfo._id;
     const car_model = formData.car_model.value;
-    const rental_price = formData.rental_price.value;
+    const manufecture = formData.manufecture.value;
+    const seat = formData.seat.value;
+    const engine = formData.engine.value;
+    const mileage = formData.mileage.value;
+    const brand = formData.brand.value;
+    const shift = formData.shift.value;
+    const power = formData.power.value;
+    const fual = formData.fual.value;
+    const price = formData.rental_price.value;
+    const rental_price = parseFloat(price);
+    const date = value;
     const availability = formData.availability.value;
     const registration_number = formData.registration_number.value;
-    const features = featuresData;
     const description = formData.description.value;
-    const image_url = formData.photo_url.value;
     const location = formData.location.value;
+    const image_url = formData.photo_url.value;
     const updateCarData = {
+      image_url,
       car_model,
+      manufecture,
+      seat,
+      engine,
+      mileage,
+      brand,
+      shift,
+      power,
+      fual,
       rental_price,
       availability,
       registration_number,
-      features,
       description,
-      image_url,
+      date,
       location,
     };
     console.table("this is data", updateCarData);
     try {
-      const { data } =await axiosSecure.put(
-        `/mycar/${_id}`,
-        updateCarData
-      );
+      const { data } = await axiosSecure.put(`/mycar/${_id}`, updateCarData);
       bookMarkData();
-      toast.success("Update Successfully",{
-            position: "top-center",
-         })
-      setOpenModal(false)
+      toast.success("Update Successfully", {
+        position: "top-center",
+      });
+      setOpenModal(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
-  console.log("Book Mark Data", bookMark);
+  if(loading)return<Loader></Loader>
   return (
     <div className="my-12">
       <Card className="overflow-x-auto w-10/12 mx-auto border border-solid border-blue-300">
         <table className="table">
           <Modal
             show={openModal}
-            size="3xl"
+            size="7xl"
             onClose={() => setOpenModal(false)}
             popup
           >
             <Modal.Header />
             <Modal.Body>
               <div className="text-center">
-               <div className="flex justify-center items-center "><img className="w-64" src={logo} alt="" /></div>
+                <div className="flex justify-center items-center ">
+                  <img className="w-64" src={logo} alt="" />
+                </div>
                 <form onSubmit={handleUpdate} className="card-body">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Car Model</span>
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue={updateInfo?.car_model}
-                      placeholder="car model"
-                      name="car_model"
-                      className="input input-bordered"
-                      required
-                    />
+                  <div className="flex items-center">
+                    <div className="form-control w-1/2 mr-4">
+                      <label className="label">
+                        <span className="label-text">Car Image</span>
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="image_url"
+                        name="photo_url"
+                        defaultValue={image_url}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="form-control w-1/2">
+                      <label className="label">
+                        <span className="label-text">Car Model</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="car model"
+                        name="car_model"
+                        defaultValue={car_model}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Daily Rental Price</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="daily rental price"
-                      className="input input-bordered"
-                      name="rental_price"
-                      defaultValue={updateInfo?.rental_price}
-                      required
-                    />
+
+                  <div className="flex items-center">
+                    <div className="w-1/3 form-control mr-4">
+                      <label className="label">
+                        <span className="label-text">Registration Number</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="registration number"
+                        name="registration_number"
+                        defaultValue={registration_number}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="w-1/3 form-control mr-4">
+                      <label className="label">
+                        <span className="label-text">Manufecture</span>
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="manufecture year"
+                        name="manufecture"
+                        defaultValue={manufecture}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="w-1/3 form-control">
+                      <label className="label">
+                        <span className="label-text">Seat</span>
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="total seat"
+                        name="seat"
+                        defaultValue={seat}
+                        className="border border-solid border-gray-300 px-2 py-3 rounded-lg"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className=" flex flex-col justify-start gap-2">
-                    <label className="text-gray-700 text-left " htmlFor="category">
-                      Category
-                    </label>
-                    <select
-                      className="border p-2 rounded-md"
+
+                  <div className="flex items-center">
+                    <div className="form-control w-1/3 mr-4">
+                      <label className="label">
+                        <span className="label-text">Engine</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="engine"
+                        name="engine"
+                        defaultValue={engine}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="form-control mr-4 w-1/3">
+                      <label className="label">
+                        <span className="label-text">Mileage</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="mileage (kmpl)"
+                        name="mileage"
+                        defaultValue={mileage}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="form-control w-1/3">
+                      <label className="label">
+                        <span className="label-text">Brand</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="brand"
+                        name="brand"
+                        defaultValue={brand}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="form-control mr-4 w-1/3">
+                      <label className="label">
+                        <span className="label-text">Shift</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="manual/automatic"
+                        name="shift"
+                        defaultValue={shift}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="form-control mr-4 w-1/3">
+                      <label className="label">
+                        <span className="label-text">Power</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="power"
+                        name="power"
+                        defaultValue={power}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                    <div className="form-control w-1/3">
+                      <label className="label">
+                        <span className="label-text">Fuel</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="fual"
+                        name="fual"
+                        defaultValue={fual}
+                        className="input input-bordered"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <div className=" flex flex-col w-1/3 mr-4 gap-2">
+                      <label className="text-gray-700 " htmlFor="category">
+                        Category
+                      </label>
+                      <select
                       defaultValue={availability}
-                      name="availability"
-                      id="availability"
-                    >
-                      <option value="available">Available</option>
-                      <option value="unavailable">Unavailable</option>
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">
-                        Vehicle Registration Number
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="registration number"
-                      name="registration_number"
-                      defaultValue={updateInfo?.registration_number}
-                      className="input input-bordered"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex flex-col  gap-2 ">
-                    <label
-                      className="text-gray-700  text-left"
-                      htmlFor="category"
-                    >
-                      Features
-                    </label>
-                    <Select
-                      options={option}
-                      onChange={handleFeatures}
-                      defaultValue={updateInfo?.features}
-                      isMulti
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Description</span>
-                    </label>
-                    <textarea
-                      type="text"
-                      placeholder="description"
-                      name="description"
-                      defaultValue={updateInfo?.description}
-                      className="input input-bordered"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Photo URL</span>
-                    </label>
-                    <input
-                      type="url"
-                      placeholder="photo_url"
-                      name="photo_url"
-                      defaultValue={updateInfo?.image_url}
-                      className="input input-bordered"
-                      required
-                    />
+                        className="border border-solid border-gray-300 px-2 py-3 rounded-lg"
+                        name="availability"
+                        id="availability"
+                      >
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                      </select>
+                    </div>
+                    <div className="form-control mr-4 w-1/3">
+                      <label className="label">
+                        <span className="label-text">Daily Rental Price</span>
+                      </label>
+                      <input
+                        type="text"
+                        defaultValue={rental_price}
+                        placeholder="daily rental price"
+                        className="input input-bordered"
+                        name="rental_price"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col w-1/3 justify-start">
+                      <label className="text-gray-700 " htmlFor="category">
+                        Category
+                      </label>
+                      <DatePicker
+                        className="border border-solid border-gray-300 mt-2 px-2 py-3 rounded-lg"
+                        selected={value}
+                        onChange={(date) => setValue(date)}
+                        placeholderText="select start date"
+                        dateFormat="dd/MM/yyyy HH:MM"
+                      />
+                    </div>
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -225,9 +338,22 @@ const MyCars = () => {
                     <textarea
                       type="text"
                       placeholder="location"
+                      defaultValue={location}
                       name="location"
-                      defaultValue={updateInfo?.location}
-                      className="input input-bordered"
+                      className="input h-20 input-bordered"
+                      required
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Description</span>
+                    </label>
+                    <textarea
+                      type="text"
+                      defaultValue={description}
+                      placeholder="description"
+                      name="description"
+                      className="input h-28 input-bordered"
                       required
                     />
                   </div>
@@ -236,6 +362,36 @@ const MyCars = () => {
                   </div>
                 </form>
                 .
+              </div>
+            </Modal.Body>
+          </Modal>
+
+          <Modal
+            show={openUModal}
+            size="md"
+            onClose={() => setOpenUModal(false)}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="text-center ">
+                <img src={logo} alt="" />
+                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                  Are you sure date this car?
+                </h3>
+                <div className="flex justify-center gap-4">
+                  <Button
+                    color="failure"
+                    onClick={() => {
+                      setOpenUModal(false), handleDelete(data._id);
+                    }}
+                  >
+                    Yes
+                  </Button>
+                  <Button color="gray" onClick={() => setOpenUModal(false)}>
+                    No
+                  </Button>
+                </div>
               </div>
             </Modal.Body>
           </Modal>
@@ -287,7 +443,9 @@ const MyCars = () => {
                       className="text-2xl cursor-pointer text-[#4981f8]"
                     />
                     <RiDeleteBin6Line
-                      onClick={() => handleDelete(bookMark._id)}
+                      onClick={() => {
+                        setOpenUModal(true), setData(bookMark);
+                      }}
                       className="text-2xl cursor-pointer text-red-500"
                     />
                   </div>

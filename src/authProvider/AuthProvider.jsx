@@ -51,22 +51,28 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setLoading(false);
       if (currentUser?.email) {
-        setUser(currentUser)
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/jwt`,
-          {
-            email: currentUser?.email,
-          },
-          { withCredentials: true }
-        )
-        console.log(data)
-      } else {
         setUser(currentUser);
-        await axios.get(
-          `${import.meta.env.VITE_API_URL}/logout`,
-          { withCredentials: true }
-        )
+        try {
+          const { data } = await axios.post(
+            `https://car-rental-theta-lac.vercel.app/jwt`,
+            { email: currentUser?.email },
+            { withCredentials: true }
+          );
+          console.log(data);
+        } catch (error) {
+          console.error("Error fetching JWT:", error);
+        }
+      } else {
+        setUser(null);
+        try {
+          await axios.get(`https://car-rental-theta-lac.vercel.app/logout`, {
+            withCredentials: true,
+          });
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
       }
+    ;
       
     });
     return () => {

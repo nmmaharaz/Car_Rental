@@ -4,7 +4,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "https://car-rental-theta-lac.vercel.app",
   withCredentials: true,
 });
 

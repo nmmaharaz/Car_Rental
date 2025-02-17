@@ -16,11 +16,11 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50">
-      <div className="bg-base-100 border-blue-600 border-b-4">
-      <div className="navbar w-11/12 mx-auto">
+      <div className="bg-base-100">
+      <div className="navbar w-10/12 mx-auto">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn text-red-600 btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -46,75 +46,98 @@ const Navbar = () => {
             <li>
               <Link to="/availablecars">Available Cars</Link>
             </li>
-            <li>
-              <Link to="/addcar">Add Car </Link>
-            </li>
-            <li>
-              <Link to="/mycars">My Cars</Link>
-            </li>
-            <li>
-              <Link to="/mybookings">My Bookings</Link>
-            </li>
+            {
+            user?.email && <li>
+            <Link to="/addcar">Add Car</Link>
+          </li>
+          }
+          {
+            user?.email &&
+             <li>
+            <Link to="/mycars">My Cars</Link>
+          </li>
+
+          }
+          {
+            user?.email && <li>
+            <Link to="/mybookings">My Bookings</Link>
+          </li>
+          }
+          <li>
+            <Link to="/services">Services</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
+          </li>
+         
             <li>
               <Link to="/login">Log-in</Link>
             </li>
             <li>
               <Link to="/registration">Registration</Link>
             </li>
-            <li>
-              <button onClick={handleSignOut}>Logout</button>
-            </li>
+            {
+            user?.email && <li>
+            <button onClick={handleSignOut}>Logout</button>
+          </li>
+          }
+            
           </ul>
         </div>
         <div className="flex items-center">
-          <img className="w-36" src={logo} alt="" />
+          <Link className="cursor-pointer" to="/"><img className="w-36" src={logo} alt="" /></Link>
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink className="font-medium text-gray-700" to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/availablecars">Available Cars</NavLink>
+            <NavLink className="font-medium text-gray-700" to="/availablecars">Available Cars</NavLink>
           </li>
           {
             user?.email && <li>
-            <NavLink to="/addcar">Add Car</NavLink>
+            <NavLink className="font-medium text-gray-700" to="/addcar">Add Car</NavLink>
           </li>
           }
           {
             user?.email &&
              <li>
-            <NavLink to="/mycars">My Cars</NavLink>
+            <NavLink className="font-medium text-gray-700" to="/mycars">My Cars</NavLink>
           </li>
 
           }
           {
             user?.email && <li>
-            <NavLink to="/mybookings">My Bookings</NavLink>
+            <NavLink className="font-medium text-gray-700" to="/mybookings">My Bookings</NavLink>
           </li>
           }
-         
-          
+          <li>
+            <Link className="font-medium text-gray-700" to="/services">Services</Link>
+          </li>   
+          <li>
+            <Link className="font-medium text-gray-700" to="/contact">Contact Us</Link>
+          </li>   
+
         </ul>
       </div>
       <div className="navbar-end hidden lg:flex *:ml-3">
         {
-          user?.email ? "":<Button gradientDuoTone="purpleToBlue">
+          user?.email ? "":<button className="border-none text-white font-semibold bg-red-700 py-2 px-6 hover:shadow-md hover:shadow-red-300 rounded-3xl">
           <Link to="/login">Log-in</Link>
-        </Button>
+        </button>
         }
         {
-          user?.email ? "":<Button gradientDuoTone="purpleToBlue">
+          user?.email ? "":<button className="font-semibold">
           <Link to="/registration">Registration</Link>
-        </Button>
+        </button>
         }
         
         {
-          user?.email && <Button gradientDuoTone="purpleToBlue">
+          user?.email && <button className="border-none text-white font-semibold bg-red-700 py-2 px-6 hover:shadow-md hover:shadow-red-300 rounded-3xl">
           <button onClick={handleSignOut}>Logout</button>
-        </Button>
+        </button>
         }
         
            {

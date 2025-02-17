@@ -10,6 +10,8 @@ import Registration from "../page/Registration";
 import CarDetails from "../page/CarDetails";
 import PrivateRoute from "../privateroute/PrivateRoute";
 import Error from "../components/Error";
+import Services from "../components/Sevices";
+import ContactSection from "../components/Contact";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
         {
             path:"/mybookings",
             element:<PrivateRoute><MyBookings></MyBookings></PrivateRoute>
+        },
+        {
+            path:"/services",
+            element:<Services></Services>
+        },
+        {
+            path:"/contact",
+            element:<ContactSection></ContactSection>
         },
         {
             path:"/login",

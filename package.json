@@ -33,7 +33,7 @@
     "react-toastify": "^11.0.2",
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
-    "swiper": "^11.1.15",
+    "swiper": "^11.2.2",
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {

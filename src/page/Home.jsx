@@ -7,16 +7,21 @@ import axios from "axios";
 import Recent from "../components/Recent";
 import Testomonial from "../components/Testomonial";
 import SpecialOffers from "../components/SpecialOffers";
+import AboutUs from "../components/AboutUs";
+import Services from "../components/Service";
+import Testimonials from "../components/UpdateTestomial";
 
 
 const Home = () => {
     const {user, loading} = useContext(AuthContext)
     
     const [data, setData] = useState([])
+    console.log(data, "this is data")
     console.log("this Data", data)
     useEffect(()=>{
         const handleResent = async() =>{
-            const {data}=await axios.get(`${import.meta.env.VITE_API_URL}/carsdata`)
+            const {data}=await axios.get(`https://car-rental-theta-lac.vercel.app/carsdata`)
+            console.log(data)
             setData(data)
         }
         handleResent()
@@ -69,24 +74,18 @@ const Home = () => {
       
     if(loading)return<Loader></Loader>
     return (
-        <div className=" my-5">
+        <div className="">
             <Banner></Banner>
-            <Choose></Choose>
-            <p className="text-5xl text-center font-bold mt-20 mb-12">Why Choose Us?</p>
-            <div className="grid w-10/12 mx-auto grid-cols-1 gap-y-6 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 ">
+            {/* <Choose></Choose> */}
+            <div className="grid py-12 w-10/12 mx-auto grid-cols-1 gap-y-6 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 ">
             {
               data?.map(car =><Recent key={car._id} car={car}></Recent>)
             }
             </div>
-            <p className="text-5xl text-center font-bold mt-20 mb-12">User Tastimonials</p>
-            <div className="grid w-10/12 mx-auto gap-y-6 gap-x-6 lg:grid-cols-3">
-                {
-                    testomonial?.map(tes=><Testomonial key={tes.id} tes={tes}></Testomonial>)
-                }
-            </div>
-            <p className="text-5xl text-center font-bold mt-20 mb-12">Special Offers</p>
             <div>
-            <SpecialOffers></SpecialOffers>
+              <Testimonials></Testimonials>
+              <Services></Services>
+              <AboutUs></AboutUs>
             </div>
         </div>
     );
