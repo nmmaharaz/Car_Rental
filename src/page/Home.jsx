@@ -13,7 +13,7 @@ import Testimonials from "../components/UpdateTestomial";
 
 
 const Home = () => {
-    const {user, loading} = useContext(AuthContext)
+    const { loading} = useContext(AuthContext)
     
     const [data, setData] = useState([])
     console.log(data, "this is data")
