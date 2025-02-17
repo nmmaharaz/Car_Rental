@@ -5,7 +5,7 @@ import Banner from "../components/Banner";
 // import Choose from "../components/Choose";
 import axios from "axios";
 import Recent from "../components/Recent";
-import Testomonial from "../components/Testomonial";
+// import Testomonial from "../components/Testomonial";
 import SpecialOffers from "../components/SpecialOffers";
 import AboutUs from "../components/AboutUs";
 import Services from "../components/Service";
