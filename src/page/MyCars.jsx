@@ -17,7 +17,7 @@ const MyCars = () => {
   const [loading, setLoading]= useState(true)
   const [data, setData] = useState(null);
   const axiosSecure = useAxiosSecure();
-  const [cars, setCars] = useState({});
+  // const [cars, setCars] = useState({});
 
   
 
